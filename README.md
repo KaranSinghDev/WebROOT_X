@@ -23,6 +23,14 @@ The system utilizes a multi-layered approach to bridge low-level physics code wi
 ## 4. How to Run
 Ensure Docker and Docker Compose are installed.
 
-1. **Start the environment:**
-   ```bash
-   docker compose up --build
+1.  **Stage and commit the build configurations:**
+    ```bash
+    git add CMakeLists.txt Dockerfile.wasm Dockerfile.test .vscode/
+    git commit -m "chore: add build configurations and VSCode environment settings"
+    ```
+
+2.  **Stage and commit the Orchestrator and Documentation:**
+    ```bash
+    git add docker-compose.yml README.md
+    git commit -m "docs: finalize system orchestration and scientific documentation"
+    ```
