@@ -1,0 +1,39 @@
+# Use a modern version of the Compose specification
+version: '3.8'
+
+services:
+  # This service is ONLY for compiling C++ to Wasm.
+  compiler:
+    image: emscripten/emsdk:3.1.51
+    volumes:
+      - ./engine:/app/engine
+      - ./wasm_bridge:/app/wasm_bridge
+      - ./frontend/public/wasm:/app/output
+    working_dir: /app
+    command: >
+      emcc -O3
+      -I/app/engine/include
+      /app/wasm_bridge/src/bindings.cpp
+      /app/engine/src/analyzer.cpp
+      -s WASM=1
+      -s MODULARIZE=1
+      -s EXPORT_NAME="WebROOTModule"
+      --bind
+      -o /app/output/webroot.js
+
+  # This service runs the React frontend web server.
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the source code for hot-reloading
+      - ./frontend:/app
+      # Create an anonymous volume to preserve the container's node_modules
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    # Wait for the compiler to finish successfully before starting
+    depends_on:
+      compiler:
+        condition: service_completed_successfully
