@@ -1,0 +1,60 @@
+name: WebROOT-X CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "dev" ]
+  pull_request:
+    branches: [ "main", "master", "dev" ]
+
+jobs:
+  # Job 1: Quickly verify the C++ physics engine using GTest
+  verify-engine:
+    name: Verify C++ Physics Engine
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build and Run Unit Tests
+        run: |
+          # Replicate the logic from Dockerfile.test
+          mkdir build && cd build
+          cmake ../engine
+          cmake --build .
+          ./unit_tests
+  
+  # Job 2: Build the full Wasm + React Application
+  build-and-deploy:
+    name: Build Wasm & Frontend
+    runs-on: ubuntu-latest
+    # This job will only run if the C++ tests passed
+    needs: verify-engine
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Wasm output directory
+        run: mkdir -p frontend/public/wasm
+
+      # This step replicates the 'compiler' service from your docker-compose
+      - name: Compile C++ to WebAssembly
+        uses: docker://emscripten/emsdk:3.1.51
+        with:
+          args: >
+            emcc -O3
+            -I/github/workspace/engine/include
+            /github/workspace/wasm_bridge/src/bindings.cpp
+            /github/workspace/engine/src/analyzer.cpp
+            -s WASM=1
+            -s MODULARIZE=1
+            -s EXPORT_NAME="WebROOTModule"
+            --bind
+            -o /github/workspace/frontend/public/wasm/webroot.js
+
+      - name: Verify Wasm Artifacts
+        run: ls -lh frontend/public/wasm
+
+      - name: Build Frontend Docker Image
+        run: docker compose build frontend

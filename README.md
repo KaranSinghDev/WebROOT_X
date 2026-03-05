@@ -1,3 +1,4 @@
+![CI/CD Pipeline](https://github.com/<YOUR_GITHUB_USERNAME>/WebROOT_X/actions/workflows/ci.yml/badge.svg)
 # WebROOT-X: Client-Side High Energy Physics (HEP) Analysis
 
 ## 1. Motivation & Intuition
