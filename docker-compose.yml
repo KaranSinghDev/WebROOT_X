@@ -37,18 +37,3 @@ services:
     depends_on:
       compiler:
         condition: service_completed_successfully
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

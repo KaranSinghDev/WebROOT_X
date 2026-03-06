@@ -4,7 +4,7 @@ project(WebROOT_Engine)
 set(CMAKE_CXX_STANDARD 17)
 
 # --- CERN QA: Strict Compiler Flags ---
-# Treat warnings as errors to enforce high code quality. 
+# Treat warnings as errors to enforce high code quality.
 # -pedantic enforces strict ISO C++ compliance.
 add_compile_options(-Wall -Wextra -Werror -pedantic)
 

@@ -24,13 +24,13 @@ jobs:
         # --enable=warning,style,performance,portability checks for memory leaks, bad C++ practices, and slow code
         # --suppress=missingInclude ignores missing Emscripten headers which aren't installed on the raw Ubuntu runner
         run: >
-          cppcheck 
-          --enable=warning,style,performance,portability 
-          --error-exitcode=1 
-          --suppress=missingInclude 
-          -I ./engine/include 
+          cppcheck
+          --enable=warning,style,performance,portability
+          --error-exitcode=1
+          --suppress=missingInclude
+          -I ./engine/include
           ./engine/src ./wasm_bridge/src
-          
+
   # --- STAGE 2: Verification & Memory Safety ---
   # Proves the math is right AND no memory leaks occur during execution
   verify-engine:
@@ -50,7 +50,7 @@ jobs:
           cmake --build .
           # Run tests. If there is a memory leak, ASan will intercept and crash this step.
           ./unit_tests
-  
+
   # --- STAGE 3: WebAssembly Compilation ---
   build-and-deploy:
     name: Build Wasm & Frontend

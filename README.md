@@ -2,7 +2,7 @@
 # WebROOT-X: Client-Side High Energy Physics (HEP) Analysis
 
 ## 1. Motivation & Intuition
-The High-Luminosity LHC (HL-LHC) upgrade will produce an unprecedented "Data Deluge." Traditional centralized analysis servers face massive bottlenecks in both network bandwidth and compute resources. 
+The High-Luminosity LHC (HL-LHC) upgrade will produce an unprecedented "Data Deluge." Traditional centralized analysis servers face massive bottlenecks in both network bandwidth and compute resources.
 
 **WebROOT-X** is a futurist proof-of-concept addressing this challenge by shifting high-performance physics calculations from the data center to the user's browser. It demonstrates a **Zero-Server Compute** model: the browser downloads a binary C++ engine and raw event data, performing complex Kinematic Analysis at near-native speed locally.
 
