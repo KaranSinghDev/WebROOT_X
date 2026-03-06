@@ -3,6 +3,19 @@ project(WebROOT_Engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# --- CERN QA: Strict Compiler Flags ---
+# Treat warnings as errors to enforce high code quality. 
+# -pedantic enforces strict ISO C++ compliance.
+add_compile_options(-Wall -Wextra -Werror -pedantic)
+
+# --- CERN QA: Memory Sanitizer (ASan) ---
+# This injects code to detect memory leaks and buffer overflows at runtime.
+option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
+if(ENABLE_ASAN)
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer -g)
+    add_link_options(-fsanitize=address)
+endif()
+
 # 1. Logic Library
 add_library(analysis_engine STATIC src/analyzer.cpp)
 target_include_directories(analysis_engine PUBLIC include)
@@ -13,7 +26,7 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/heads/main.zip
 )
-# Force shared CRT to avoid MSVC/Windows specific issues (good practice generally)
+# Force shared CRT to avoid MSVC/Windows specific issues
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 

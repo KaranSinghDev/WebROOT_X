@@ -2,34 +2,53 @@ name: WebROOT-X CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "master", "dev" ]
+    branches: [ "Release", "Build" ]
   pull_request:
-    branches: [ "main", "master", "dev" ]
+    branches: [ "Release", "Build" ]
 
 jobs:
-  # Job 1: Quickly verify the C++ physics engine using GTest
-  verify-engine:
-    name: Verify C++ Physics Engine
+  # --- STAGE 1: Static Analysis ---
+  # Proves the code is logically safe without running it
+  code-quality:
+    name: Static Analysis (CppCheck)
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install CppCheck
+        run: sudo apt-get install -y cppcheck
+
+      - name: Run CppCheck
+        # Fails the build if it finds bad pointers, out-of-bounds arrays, or memory leaks
+        # We suppress missingIncludeSystem to ignore external libraries like <vector>
+        run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem ./engine/src ./engine/include ./wasm_bridge/src
+
+  # --- STAGE 2: Verification & Memory Safety ---
+  # Proves the math is right AND no memory leaks occur during execution
+  verify-engine:
+    name: Verify Math & Memory Safety (ASan)
+    runs-on: ubuntu-latest
+    needs: code-quality # Only runs if Stage 1 passes
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build and Run Unit Tests
+      - name: Build and Run Unit Tests (with ASan)
         run: |
-          # Replicate the logic from Dockerfile.test
           mkdir build && cd build
-          cmake ../engine
+          # We pass the ASAN flag we created in CMake
+          cmake -DENABLE_ASAN=ON ../engine
           cmake --build .
+          # Run tests. If there is a memory leak, ASan will intercept and crash this step.
           ./unit_tests
   
-  # Job 2: Build the full Wasm + React Application
+  # --- STAGE 3: WebAssembly Compilation ---
   build-and-deploy:
     name: Build Wasm & Frontend
     runs-on: ubuntu-latest
-    # This job will only run if the C++ tests passed
-    needs: verify-engine
+    needs: verify-engine # Only runs if Stage 2 passes
 
     steps:
       - name: Checkout Code
@@ -38,7 +57,6 @@ jobs:
       - name: Create Wasm output directory
         run: mkdir -p frontend/public/wasm
 
-      # This step replicates the 'compiler' service from your docker-compose
       - name: Compile C++ to WebAssembly
         uses: docker://emscripten/emsdk:3.1.51
         with:
