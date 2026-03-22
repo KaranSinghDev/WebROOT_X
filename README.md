@@ -16,9 +16,9 @@ WebROOT-X is a proof-of-concept platform that runs high-performance C++ physics 
 A short demonstration of the application calculating the invariant mass of a Z-Boson from particle data in real-time. All calculations are happening locally in the browser.
 
 <div align="center">
-  <video src="[YOUR_VIDEO_URL_HERE](https://github.com/user-attachments/assets/4b62bb7b-b7b9-429a-b6db-e6f56b97a00f)" width="100%" autoplay loop muted></video>
+   <video src="https://github.com/user-attachments/assets/4b62bb7b-b7b9-429a-b6db-e6f56b97a00f" width="100%" autoplay loop muted>
+</video>     
 </div>
----
 
 ## Problem & Solution
 
