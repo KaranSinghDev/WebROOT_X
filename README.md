@@ -40,31 +40,18 @@ A short demonstration of the application calculating the invariant mass of a Z-B
 | **Backend/Kernel**| `C++17`, `WebAssembly (Wasm)`, `Emscripten`  |
 | **DevOps**      | `Docker`, `CMake`, `Google Test (GTest)`     |
 
-## Architecture
+## How to Run
+Ensure Docker and Docker Compose are installed.
 
-The system is primarily based on simple but powerful architecture to bridge the C++ and web worlds.
-
-```mermaid
-graph TD
-    A[C++ Physics Kernel] -- "Compiled by Emscripten" --> B(WebAssembly Module);
-    B -- "Loaded by" --> C{React Frontend};
-    C -- "Displays Results" --> D[User's Browser];```
-
-## How to Run Locally
-
-This project is fully containerized for a one-command setup.
-
-1.  **Prerequisites:** Docker and Docker Compose.
-2.  **Clone the repository:**
+1.  **Stage and commit the build configurations:**
     ```bash
-    git clone https://github.com/KaranSinghDev/WebROOT-X.git
-    cd WebROOT-X
+    git add CMakeLists.txt Dockerfile.wasm Dockerfile.test .vscode/
+    git commit -m "chore: add build configurations and VSCode environment settings"
     ```
-3.  **Build and Run:**
-    This command will automatically compile the C++ to WebAssembly and start the web server.
-    ```bash
-    docker-compose up --build
-    ```
-4.  Open your browser and navigate to `http://localhost:5173`.
 
----
+2.  **Stage and commit the Orchestrator and Documentation:**
+    ```bash
+    git add docker-compose.yml README.md
+    git commit -m "docs: finalize system orchestration and scientific documentation"
+    ```
+
