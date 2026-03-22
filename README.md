@@ -11,7 +11,6 @@ WebROOT-X is a proof-of-concept platform that runs high-performance C++ physics 
 
 [**<img src="https://vercel.com/button" alt="Deploy with Vercel" width="120">**](https://webroot-x.vercel.app/)
 
-*(Note: If you are a developer, you can find instructions on how to run this project locally at the bottom of this file.)*
 
 ### Visual Showcase
 A short demonstration of the application calculating the invariant mass of a Z-Boson from particle data in real-time. All calculations are happening locally in the browser.
