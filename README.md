@@ -1,7 +1,7 @@
 ![CI/CD Pipeline](https://github.com/<YOUR_GITHUB_USERNAME>/WebROOT_X/actions/workflows/ci.yml/badge.svg)
 # WebROOT-X: Client-Side Physics Analysis with WebAssembly
 
-WebROOT-X is a proof-of-concept platform that runs  high-performance C++ physics analysis code directly in the browser using WebAssembly. It demonstrates a "zero-server" approach to scientific computing, shifting the computational load from centralized servers to the researcher's own machine    .
+WebROOT-X is a proof-of-concept platform that runs  high-performance C++ physics analysis code directly in the browser using WebAssembly. It demonstrates a "zero-server" approach to scientific computing, shifting the computational load from centralized servers to the researcher's own machine .
 
 ---
 
